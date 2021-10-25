@@ -894,9 +894,10 @@ class WhatsApp {
                     return;
                 },
                 only_group: async () => {
-                    await fungsi.reply(`maaf, perintah hanya bisa dilakukan pada group chat!`, () => {
-                        console.log("group chat only!");
-                    });
+                    if (isGroup)
+                        await fungsi.reply(`maaf, perintah hanya bisa dilakukan pada group chat!`, () => {
+                            console.log("group chat only!");
+                        });
                     return;
                 },
                 // ===============================================================================================

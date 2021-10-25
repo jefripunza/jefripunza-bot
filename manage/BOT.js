@@ -316,7 +316,7 @@ bot.listenMessage(async receive => {
                 }
             }
         })
-    }
+    } // grup verify end
 
     // for SU
     if (isCmd && isGroup) {
