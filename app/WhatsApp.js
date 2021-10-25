@@ -711,6 +711,8 @@ class WhatsApp {
                 );
             }
 
+            if (chat.key && chat.key.remoteJid == "status@broadcast") return; // negate status
+
             const {
                 text,
                 extendedText,
@@ -776,7 +778,6 @@ class WhatsApp {
             if (!chat.hasNewMessage) return;
             chat = JSON.parse(JSON.stringify(chat)).messages[0];
             if (!chat.message) return;
-            if (chat.key && chat.key.remoteJid == "status@broadcast") return;
             if (chat.key.fromMe) return;
 
             const from = chat.key.remoteJid;
