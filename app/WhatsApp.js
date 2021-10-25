@@ -6,7 +6,9 @@ const speed = require('performance-now')
 
 // ============================== 3th ==============================
 // conversion
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg'); // wajib, untuk video sama gif ini mah
+ffmpeg.setFfmpegPath(ffmpegPath);
 const sharp = require('sharp');
 
 // styling
