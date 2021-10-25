@@ -235,21 +235,21 @@ class WhatsApp {
             await exec(`ping ${host} -n 1`, (error, stdout, stderr) => {
                 ping(
                     String(stdout)
-                        .split("\n")[7]
-                        .split("Min")[1]
-                        .split(", ")
-                        .map((v, i) => {
-                            if (i === 0) {
-                                return "Min" + v
-                            }
-                            return v
-                        })
-                        .map(v => {
-                            const data = String(v).replace("\r", "").split(" = ")
-                            return {
-                                [data[0]]: data[1],
-                            }
-                        })
+                    // .split("\n")[7]
+                    // .split("Min")[1]
+                    // .split(", ")
+                    // .map((v, i) => {
+                    //     if (i === 0) {
+                    //         return "Min" + v
+                    //     }
+                    //     return v
+                    // })
+                    // .map(v => {
+                    //     const data = String(v).replace("\r", "").split(" = ")
+                    //     return {
+                    //         [data[0]]: data[1],
+                    //     }
+                    // })
                 )
             });
         } catch (error) {
@@ -929,6 +929,7 @@ class WhatsApp {
                             await fungsi.chatRead();
                             await this.systemPing("www.google.com", async ping => {
                                 await fungsi.chatRead();
+                                console.log({ ping });
                                 await fungsi.reply(JSON.stringify({
                                     ping: {
                                         google: ping,
