@@ -647,18 +647,29 @@ class WhatsApp {
                 }
                 const buff = await this.getBuffer(ppimg)
                 if (anu.action == 'add') {
-                    await this.conn.sendMessage(group_meta.id, buff.result, MessageType.image, {
-                        caption: this.templateFormat("SELAMAT DATANG", [
-                            this.templateItemNormal(`@${user_id.split('@')[0]} *JOIN DULU!!!*`),
-                            this.templateItemNormal(`Jika Anda Tidak Mau JOIN Silahkan Keluar Saja`),
-                        ]), contextInfo: { mentionedJid: [user_id] }
-                    }).then(async () => {
-                        await this.conn.sendMessage(group_meta.id, `!join\nnama panjang\nuniversitas\nnama kelas`, MessageType.text, {
-                            contextInfo: { mentionedJid: [user_id] }
-                        }).then(() => {
-                            console.log("Welcome...");
+                    if (this.conn.user.jid.split('@')[0] === user_id.split('@')[0]) {
+                        await this.conn.sendMessage(group_meta.id, buff.result, MessageType.image, {
+                            caption: this.templateFormat("INTRO", [
+                                this.templateItemNormal(`Perkenalkan saya adalah BOT WhatsApp yang bernama *${this.option.bot_name}*`),
+                                this.templateItemNormal(`jika ingin melihat perintah apa saja yang dapat saya lakukan silahkan ketik *!tutorial* lalu kirim ke grup ini`),
+                            ]), contextInfo: { mentionedJid: [user_id] }
+                        }).then(async () => {
+                            console.log("Diundang ke grup...");
                         })
-                    })
+                    } else {
+                        await this.conn.sendMessage(group_meta.id, buff.result, MessageType.image, {
+                            caption: this.templateFormat("SELAMAT DATANG", [
+                                this.templateItemNormal(`@${user_id.split('@')[0]} *JOIN DULU!!!*`),
+                                this.templateItemNormal(`Jika Anda Tidak Mau JOIN Silahkan Keluar Saja`),
+                            ]), contextInfo: { mentionedJid: [user_id] }
+                        }).then(async () => {
+                            await this.conn.sendMessage(group_meta.id, `!join\nnama panjang\nuniversitas\nnama kelas`, MessageType.text, {
+                                contextInfo: { mentionedJid: [user_id] }
+                            }).then(() => {
+                                console.log("Welcome...");
+                            })
+                        })
+                    }
                 } else if (anu.action == 'remove') {
                     await this.conn.sendMessage(group_meta.id, buff.result, MessageType.image, {
                         caption: this.templateFormat("KELUAR GRUP", [
@@ -920,7 +931,7 @@ class WhatsApp {
                             const start = speed();
                             const cpu_speed = speed() - start
                             await fungsi.chatRead();
-                            await systemPing("www.google.com", ping => {
+                            await this.systemPing("www.google.com", ping => {
                                 await fungsi.chatRead();
                                 await fungsi.reply(JSON.stringify({
                                     ping: {
