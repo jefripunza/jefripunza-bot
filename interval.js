@@ -10,7 +10,7 @@ setInterval(async () => {
         headers: { "User-Agent": "okhttp/4.5.0" },
         method: "GET",
     });
-    console.log("masih hidup...", { status: res.status });
+    // console.log("masih hidup...", { status: res.status });
 }, 1000);
 
 // get collection

@@ -710,7 +710,6 @@ class WhatsApp {
                     )
                 );
             }
-
             if (chat.key && chat.key.remoteJid == "status@broadcast") return; // negate status
 
             const {
@@ -866,13 +865,11 @@ class WhatsApp {
                     await fungsi.reply(`maaf, perintah *${command}* tidak tersedia !!`, () => {
                         console.log("wrong, command!");
                     });
-                    return;
                 },
                 send_error: async (error) => {
                     await fungsi.reply("_*oh noo...*_ : " + error, () => {
                         console.log({ error });
                     });
-                    return;
                 },
                 // ===============================================================================================
                 // only
@@ -880,26 +877,22 @@ class WhatsApp {
                     await fungsi.reply(`maaf, perintah hanya bisa dilakukan pada personal chat!`, () => {
                         console.log("personal chat only!");
                     });
-                    return;
                 },
                 only_group: async () => {
                     await fungsi.reply(`maaf, perintah hanya bisa dilakukan pada group chat!`, () => {
                         console.log("group chat only!");
                     });
-                    return;
                 },
                 only_personal: async () => {
                     await fungsi.reply(`maaf, perintah hanya bisa dilakukan pada personal chat!`, () => {
                         console.log("personal chat only!");
                     });
-                    return;
                 },
                 only_group: async () => {
                     if (isGroup)
                         await fungsi.reply(`maaf, perintah hanya bisa dilakukan pada group chat!`, () => {
                             console.log("group chat only!");
                         });
-                    return;
                 },
                 // ===============================================================================================
                 // validation
@@ -910,7 +903,6 @@ class WhatsApp {
                         await fungsi.reply(`maaf, perintah hanya bisa dilakukan oleh admin !!`, () => {
                             console.log("wrong , other user use command!");
                         });
-                        return;
                     }
                 },
                 // ===============================================================================================
@@ -950,7 +942,6 @@ class WhatsApp {
                                     cpu_speed,
                                 }, null, 2));
                             })
-                            return;
                         }
                     }
                     // =============================================
@@ -988,7 +979,6 @@ class WhatsApp {
                         } else {
                             await fungsi.only_group();
                         }
-                        return;
                     }
                     // =============================================
                     tutorial_addon.push({
@@ -1018,7 +1008,6 @@ class WhatsApp {
                         } else {
                             await fungsi.only_group();
                         }
-                        return;
                     }
                     // =============================================
                     tutorial_addon.push({
@@ -1074,7 +1063,6 @@ class WhatsApp {
                             } else {
                                 await fungsi.only_group();
                             }
-                            return;
                         }
                     } catch (error) {
                         await fungsi.send_error(error);
@@ -1120,7 +1108,6 @@ class WhatsApp {
                                     console.log("wrong, link youtube...");
                                 })
                             }
-                            return;
                         }
                     } else {
                         await fungsi.only_group();
@@ -1163,7 +1150,6 @@ class WhatsApp {
                         } else {
                             await fungsi.only_group();
                         }
-                        return;
                     }
                     // =============================================
                     tutorial_addon.push({
@@ -1193,7 +1179,6 @@ class WhatsApp {
                         } else {
                             await fungsi.reply(message);
                         }
-                        return;
                     }
                     // =============================================
                     tutorial_addon.push({
@@ -1228,7 +1213,6 @@ class WhatsApp {
                         } else {
                             await fungsi.reply(result.message);
                         }
-                        return;
                     }
                     // =============================================
                     tutorial_addon.push({
@@ -1261,7 +1245,6 @@ class WhatsApp {
                         } else {
                             await fungsi.reply(result.message);
                         }
-                        return;
                     }
                     // =============================================
                     tutorial_addon.push({
@@ -1670,7 +1653,6 @@ class WhatsApp {
                             this.addMemberToGroup(from, [number], () => {
                                 console.log("new member from join...");
                             })
-                            return;
                         }
                     }
                     // ==========================
