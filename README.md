@@ -15,5 +15,5 @@ git add . && git commit -am "make it better" && git push heroku HEAD:main
 
 ### ALL PUSH
 ```bash
-git add . && git branch -M main  && git commit -m "bismillah" && git push -f origin main && git push heroku HEAD:main
+git add . && git branch -M main  && git commit -m "bismillah" && git push -f origin main && git push heroku HEAD:master
 ```
