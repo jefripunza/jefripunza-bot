@@ -43,6 +43,7 @@ const googleTTS = require("google-tts-api");
 const brainly = require('brainly-scraper');
 // youtube download
 const ytdl = require('ytdl-core');
+const { checkGroupVerify } = require("../models");
 
 class WhatsApp {
     /**
@@ -653,18 +654,28 @@ class WhatsApp {
                             console.log("Diundang ke grup...");
                         })
                     } else {
-                        await this.conn.sendMessage(group_meta.id, buff.result, MessageType.image, {
-                            caption: this.templateFormat("SELAMAT DATANG", [
-                                this.templateItemNormal(`@${user_id.split('@')[0]} *JOIN DULU!!!*`),
-                                this.templateItemNormal(`Jika Anda Tidak Mau JOIN Silahkan Keluar Saja`),
-                            ]), contextInfo: { mentionedJid: [user_id] }
-                        }).then(async () => {
-                            await this.conn.sendMessage(group_meta.id, `!join\nnama panjang\nuniversitas\nnama kelas`, MessageType.text, {
-                                contextInfo: { mentionedJid: [user_id] }
-                            }).then(() => {
-                                console.log("Welcome...");
+                        if (await checkGroupVerify(group_meta.id)) {
+                            await this.conn.sendMessage(group_meta.id, buff.result, MessageType.image, {
+                                caption: this.templateFormat("SELAMAT DATANG", [
+                                    this.templateItemNormal(`@${user_id.split('@')[0]} *JOIN DULU!!!*`),
+                                    this.templateItemNormal(`Jika Anda Tidak Mau JOIN Silahkan Keluar Saja`),
+                                ]), contextInfo: { mentionedJid: [user_id] }
+                            }).then(async () => {
+                                await this.conn.sendMessage(group_meta.id, `!join\nnama panjang\nuniversitas\nnama kelas`, MessageType.text, {
+                                    contextInfo: { mentionedJid: [user_id] }
+                                }).then(() => {
+                                    console.log("Welcome...");
+                                })
                             })
-                        })
+                        } else {
+                            await this.conn.sendMessage(group_meta.id, buff.result, MessageType.image, {
+                                caption: this.templateFormat("SELAMAT DATANG", [
+                                    this.templateItemNormal(`@${user_id.split('@')[0]} selamat bergabung di grup *${group_meta.subject}*`),
+                                ]), contextInfo: { mentionedJid: [user_id] }
+                            }).then(async () => {
+                                console.log("Diundang ke grup...");
+                            })
+                        }
                     }
                 } else if (anu.action == 'remove') {
                     await this.conn.sendMessage(group_meta.id, buff.result, MessageType.image, {
