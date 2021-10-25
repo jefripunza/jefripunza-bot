@@ -10,7 +10,7 @@ git add . && git branch -M main  && git commit -m "bismillah" && git push -f ori
 
 ### HEROKU
 ```bash
-git add . && git commit -am "make it better" && git push heroku HEAD:master
+git add . && git commit -am "make it better" && git push heroku HEAD:main
 ```
 
 ### ALL PUSH
