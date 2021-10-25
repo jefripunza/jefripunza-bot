@@ -233,6 +233,33 @@ class WhatsApp {
         const uptime = process.uptime()
         return this.detikKeWaktu(uptime)
     }
+    async systemPing(host, ping) {
+        try {
+            const exec = require('child_process').exec;
+            await exec(`ping ${host} -n 1`, (error, stdout, stderr) => {
+                ping(
+                    String(stdout)
+                        .split("\n")[7]
+                        .split("Min")[1]
+                        .split(", ")
+                        .map((v, i) => {
+                            if (i === 0) {
+                                return "Min" + v
+                            }
+                            return v
+                        })
+                        .map(v => {
+                            const data = String(v).replace("\r", "").split(" = ")
+                            return {
+                                [data[0]]: data[1],
+                            }
+                        })
+                )
+            });
+        } catch (error) {
+            console.error(error)
+        }
+    }
     // =============================== FUNCTION WHATSAPP ===============================
     /**
      * 
@@ -893,16 +920,15 @@ class WhatsApp {
                             const start = speed();
                             const cpu_speed = speed() - start
                             await fungsi.chatRead();
-                            await ping.promise.probe('google.com')
-                                .then(async (res) => {
-                                    await fungsi.chatRead();
-                                    await fungsi.reply(JSON.stringify({
-                                        ping: {
-                                            google: res.time,
-                                        },
-                                        cpu_speed,
-                                    }, null, 2));
-                                });
+                            await systemPing("www.google.com", ping => {
+                                await fungsi.chatRead();
+                                await fungsi.reply(JSON.stringify({
+                                    ping: {
+                                        google: ping,
+                                    },
+                                    cpu_speed,
+                                }, null, 2));
+                            })
                             return;
                         }
                     }
