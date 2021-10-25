@@ -309,8 +309,6 @@ bot.listenMessage(async receive => {
                             // harus join dulu
                             await fungsi.access_denied();
                         }
-                    } else {
-                        receive.only_group();
                     }
                 } else {
                     // chat bebas
