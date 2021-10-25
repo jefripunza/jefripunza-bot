@@ -931,7 +931,7 @@ class WhatsApp {
                             const start = speed();
                             const cpu_speed = speed() - start
                             await fungsi.chatRead();
-                            await this.systemPing("www.google.com", ping => {
+                            await this.systemPing("www.google.com", async ping => {
                                 await fungsi.chatRead();
                                 await fungsi.reply(JSON.stringify({
                                     ping: {
