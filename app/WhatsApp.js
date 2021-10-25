@@ -14,9 +14,6 @@ const sharp = require('sharp');
 // styling
 const emoji = require('node-emoji');
 
-// ping internet
-const ping = require('ping');
-
 // parsing data
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
@@ -235,7 +232,6 @@ class WhatsApp {
     }
     async systemPing(host, ping) {
         try {
-            const exec = require('child_process').exec;
             await exec(`ping ${host} -n 1`, (error, stdout, stderr) => {
                 ping(
                     String(stdout)
