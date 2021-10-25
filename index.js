@@ -3,7 +3,10 @@ String.prototype.replaceAll = function (search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
-require("./models/engine/MongoDB");
-require("./interval"); // let's goo
+require("./app/WhatsApp");
+require("./app/Express");
 
 require("./manage/BOT");
+require("./manage/Server");
+
+require("./interval"); // let's goo

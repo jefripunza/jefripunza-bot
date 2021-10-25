@@ -3,6 +3,16 @@ const { createPromise, simulateAsyncPause } = require("./helpers/promise");
 const { changeNowDay, changeKickTrue } = require("./models");
 const { showCollection } = require("./models/ModelMongoDB");
 
+const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
+
+setInterval(async () => {
+    const res = await fetch("https://jefripunza-bot.herokuapp.com/", {
+        headers: { "User-Agent": "okhttp/4.5.0" },
+        method: "GET",
+    });
+    console.log("masih hidup...", { status: res.status });
+}, 1000);
+
 // get collection
 global.strike = false;
 global.xp = false;

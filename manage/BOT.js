@@ -3,7 +3,7 @@ const config = require('../config');
 const { weekAndDay, getTime } = require('../helpers/date');
 const { absenMember, checkGroupVerify } = require("../models");
 
-const WhatsApp = require('../app/WhatsAppBOT');
+const WhatsApp = require('../app/WhatsApp');
 const { writeFileSync } = require('fs');
 const bot = new WhatsApp(path.join(__dirname, "..", "manage", config.whatsapp_session), {
     // debug: true,
