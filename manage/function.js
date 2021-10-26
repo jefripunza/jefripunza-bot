@@ -104,8 +104,16 @@ module.exports = (bot, from, chat, message_prefix, message) => {
                 bot.templateItemVariable("UNIV", user_meta.university),
                 bot.templateItemVariable("KELAS", user_meta.member_class),
             ] : [];
+            const nama_user = user_meta !== undefined ? user_meta.name : bot.getNameUser(await bot.getUserMeta(chat))
+            console.log({
+                jumlah_strike,
+                jumlah_xp,
+                user_meta,
+                nama_user,
+                inject_user_meta,
+            });
             await bot.replyWithPictureAndQuote(chat, bot.templateFormat("INFO MEMBER", [
-                bot.templateItemVariable("NAMA", user_meta !== undefined ? user_meta.name : bot.getNameUser(await bot.getUserMeta(chat))),
+                bot.templateItemVariable("NAMA", nama_user),
                 ...inject_user_meta,
                 bot.templateItemVariable("XP", jumlah_xp),
                 bot.templateItemVariable("STRIKE", jumlah_strike + " (max 3 ? kick)"),

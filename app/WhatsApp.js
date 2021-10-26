@@ -408,13 +408,15 @@ class WhatsApp {
         const members = await this.getGroupParticipants(from)
         const admin = this.getGroupAdmins(meta.participants);
         const buffer = await this.getBuffer(pict);
+        const user_pemilik = admin.filter(v => {
+            return v.isSuperAdmin
+        })[0];
+        const name_pemilik = user_pemilik > 0 ? this.getNameUser(user_pemilik) : "SUDAH PERGI DARI GRUP"
         this.conn.sendMessage(from, buffer.result, MessageType.image, {
             contextInfo: { mentionedJid: members },
             caption: this.templateFormat("INFO GRUP", [
                 this.templateItemVariable("NAMA", meta.subject),
-                this.templateItemVariable("PEMILIK", this.getNameUser(admin.filter(v => {
-                    return v.isSuperAdmin
-                })[0])),
+                this.templateItemVariable("PEMILIK", name_pemilik),
                 this.templateItemVariable("MEMBER", meta.participants.length),
                 this.templateItemVariable("ADMIN", admin.map(v => {
                     const name = this.getNameUser(v);
@@ -995,6 +997,7 @@ class WhatsApp {
                         if (isGroup) {
                             console.log("Group...");
                             await brainly(far).then(async res => {
+                                console.log("Respon...", { res });
                                 if (res.length > 0) {
                                     console.log("Sip...");
                                     const jawaban = [];
