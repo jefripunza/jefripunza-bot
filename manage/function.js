@@ -279,7 +279,8 @@ module.exports = (bot, from, chat, message_prefix, message) => {
             }).length > 0;
             const join = list_join.map((v, i) => {
                 const date = new Date(v.time).toLocaleDateString();
-                return `${i + 1}. ${v.name}\nuniversitas : ${v.university}\nkelas : ${v.member_class}\njoin sejak : ${date}\n\n`;
+                const date_pisah = String(date).split("/")
+                return `${i + 1}. ${v.name}\nuniversitas : ${v.university}\nkelas : ${v.member_class}\njoin sejak : ${date_pisah[1]}/${date_pisah[0]}/${date_pisah[2]}\n\n`;
             })
             fungsi.reply(bot.templateFormat("SUDAH JOIN", [
                 bot.templateItemList("List", [

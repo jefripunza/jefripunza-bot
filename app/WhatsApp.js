@@ -991,9 +991,12 @@ class WhatsApp {
                 },
                 tanya: async () => {
                     if (command === this.prefix + "tanya") {
+                        console.log("Tanya...");
                         if (isGroup) {
+                            console.log("Group...");
                             await brainly(far).then(async res => {
                                 if (res.length > 0) {
+                                    console.log("Sip...");
                                     const jawaban = [];
                                     for (let i = 0; i < res.data.length; i++) {
                                         const hasil = res.data[i];

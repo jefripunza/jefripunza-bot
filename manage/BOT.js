@@ -114,22 +114,12 @@ bot.listenMessage(async receive => {
                             await receive.only_group();
                         }
                     } else if ([
-                        config.prefix + "deskripsi",
-                    ].some(v => command === v)) {
-                        if (isGroup) {
-                            if (isBotGroupAdmins) {
-                                await fungsi.info_grup();
-                            }else{
-                                await receive.reply("maaf, bot belum jadi admin, jadikan admin bot nya donk biar *full service*")
-                            }
-                        } else {
-                            await receive.only_group();
-                        }
-                    } else if ([
                         config.prefix + "info",
                         config.prefix + "saya",
                     ].some(v => command === v)) {
+                        console.log("Saya...");
                         if (isGroup) {
+                            console.log("Group...");
                             await fungsi.info_user();
                         } else {
                             await receive.only_group();
@@ -318,7 +308,7 @@ bot.listenMessage(async receive => {
         })
     } // grup verify end
 
-    // for SU
+    // for Global & SU
     if (isCmd && isGroup) {
         if (String(message_prefix).toLowerCase().startsWith(config.prefix + "grup ")) {
             if (isGroup) {
@@ -332,6 +322,14 @@ bot.listenMessage(async receive => {
                 })
             } else {
                 await receive.only_group();
+            }
+        } else if ([
+            config.prefix + "deskripsi",
+        ].some(v => command === v)) {
+            if (isBotGroupAdmins) {
+                await fungsi.info_grup();
+            } else {
+                await receive.reply("maaf, bot belum jadi admin, jadikan admin bot nya donk biar *full service*")
             }
         }
     }
