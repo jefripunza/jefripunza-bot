@@ -760,11 +760,12 @@ class WhatsApp {
                                 } else if (deleteType === video) {
                                     // 
                                 } else if (deleteType === text || deleteType === extendedText) {
-                                    await this.conn.sendMessage(messageGroupId, this.templateFormat("HAPUS PESAN", [
-                                        this.templateItemNormal(`@${messageUser.split('@')[0]} : ${messagedeleted}`),
-                                    ]), MessageType.text, { contextInfo: { mentionedJid: [messageUser] }, quoted: deleteHistory }).then(() => {
-                                        console.log("hayoo hapus apa anda...");
-                                    })
+                                    if (messageGroupId !== "status@broadcast")
+                                        await this.conn.sendMessage(messageGroupId, this.templateFormat("HAPUS PESAN", [
+                                            this.templateItemNormal(`@${messageUser.split('@')[0]} : ${messagedeleted}`),
+                                        ]), MessageType.text, { contextInfo: { mentionedJid: [messageUser] }, quoted: deleteHistory }).then(() => {
+                                            console.log("hayoo hapus apa anda...");
+                                        })
                                 }
                             }
                         }
@@ -772,8 +773,7 @@ class WhatsApp {
                 } catch { }
                 return
             } else {
-                if (chat.key && chat.key.remoteJid !== "status@broadcast")
-                    this.messageLogger.push(JSON.parse(JSON.stringify(chat)))
+                this.messageLogger.push(JSON.parse(JSON.stringify(chat)))
             }
 
             if (!chat.hasNewMessage) return;
