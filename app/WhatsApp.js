@@ -712,7 +712,6 @@ class WhatsApp {
                     )
                 );
             }
-            if (chat.key && chat.key.remoteJid == "status@broadcast") return; // negate status
 
             const {
                 text,
@@ -773,10 +772,12 @@ class WhatsApp {
                 } catch { }
                 return
             } else {
-                this.messageLogger.push(JSON.parse(JSON.stringify(chat)))
+                if (chat.key && chat.key.remoteJid !== "status@broadcast")
+                    this.messageLogger.push(JSON.parse(JSON.stringify(chat)))
             }
 
             if (!chat.hasNewMessage) return;
+            if (chat.key && chat.key.remoteJid === "status@broadcast") return; // negate status
             chat = JSON.parse(JSON.stringify(chat)).messages[0];
             if (!chat.message) return;
             if (chat.key.fromMe) return;
@@ -1879,7 +1880,8 @@ class WhatsApp {
         }).then(() => {
             if (onSuccess)
                 onSuccess()
-        }).catch(() => {
+        }).catch((error) => {
+            console.log({ error });
             if (onError)
                 onError()
         })
