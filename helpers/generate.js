@@ -10,7 +10,7 @@ function generateRandomString(length = 20) {
     }
     return result;
 }
-function generateRandomValidate(length = 20) {
+function generateRandomOTP(length = 4) {
     var result = "";
     var characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     var charactersLength = characters.length;
@@ -20,12 +20,12 @@ function generateRandomValidate(length = 20) {
     return result;
 }
 function generateRandomActivation() {
-    return generateRandomValidate(4) + "-" + generateRandomValidate(4);
+    return generateRandomOTP(4) + "-" + generateRandomOTP(4);
 }
 
 module.exports = {
     generateRandomInteger,
     generateRandomString,
-    generateRandomValidate,
+    generateRandomOTP,
     generateRandomActivation,
 }
