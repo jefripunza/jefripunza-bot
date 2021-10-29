@@ -1,7 +1,7 @@
 const app = global.app;
 const bot = global.bot;
 
-app.post("/cek-nomor/:nomor", async (req, res, next) => {
+app.get("/cek-nomor/:nomor", async (req, res, next) => {
   await bot.isRegisteredUser(req.params.nomor, () => {
     res.status(200).json({
       registered: true,
@@ -11,7 +11,6 @@ app.post("/cek-nomor/:nomor", async (req, res, next) => {
       registered: false,
     })
   })
-
 });
 
 app.get("*", (req, res, next) => {
