@@ -8,3 +8,8 @@ git init && git remote add origin https://github.com/jefripunza/jefripunza-bot
 ```bash
 git add . && git branch -M main  && git commit -m "bismillah" && git push -f origin main && git push heroku HEAD:master
 ```
+
+### ON/OFF SERVER
+```bash
+heroku ps:scale web=0
+```

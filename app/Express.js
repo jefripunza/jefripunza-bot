@@ -7,6 +7,9 @@ global.express = express;
 const app = express();
 const server = http.createServer(app);
 
+// middleware
+app.use(express.json());
+
 // standard Heroku App
 const host = '0.0.0.0';
 const port = process.env.PORT || 5000;
