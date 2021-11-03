@@ -149,7 +149,7 @@ bot.listenMessage(async receive => {
                                     const date = new Date(v.time).toLocaleDateString();
                                     const date_split = String(date).split("/")
                                     return `${i + 1}. ${v.reason} (${date_split[1]}/${date_split[0]}/${date_split[2]})\n`;
-                                }).join("")
+                                })
                                 await fungsi.reply(bot.templateFormat("XP SAYA", [
                                     bot.templateItemList("List", [
                                         ...xp_saya,
