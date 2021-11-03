@@ -53,41 +53,6 @@ class WhatsApp {
      */
     constructor(SESSION_DATA, option = {}) {
         const conn = new WAConnection();
-        if (option.autoReconnect) {
-            /**
-             * onAllErrors
-             * onConnectionLost // only automatically reconnect when the connection breaks
-             */
-            conn.autoReconnect = ReconnectMode[option.autoReconnect]; // specific
-        } else {
-            conn.autoReconnect = ReconnectMode.onAllErrors; // default
-        }
-        conn.connectOptions.maxRetries = 10000;
-        if (option.debug) {
-            conn.logger.level = "debug";
-            conn.chatOrderingKey = waChatKey(true); // order chats such that pinned chats are on top
-        }
-        conn.on('open', async () => {
-            await fs.writeFileSync(SESSION_DATA, JSON.stringify(conn.base64EncodedAuthInfo(), null, '\t')); // nyimpen sesi baru
-        });
-        if (fs.existsSync(SESSION_DATA)) {
-            conn.loadAuthInfo(SESSION_DATA);
-        }
-        conn.on('close', async ({ reason, isReconnecting }) => {
-            if (option.debug) {
-                console.log('oh no got disconnected: ' + reason + ', reconnecting: ' + isReconnecting);
-            }
-            if (reason === "invalid_session") {
-                this.logout(async () => {
-                    await conn.connect(); // reconnect
-                })
-            } else {
-                if (option.reconnect) {
-                    await conn.connect(); // reconnect
-                }
-            }
-        })
-        conn.connect(); // auto connect after declaration
         //
         this.conn = conn;
         this.SESSION_DATA = SESSION_DATA;
@@ -96,6 +61,59 @@ class WhatsApp {
         this.bot_name = option.bot_name ? option.bot_name : "*From BOT*";
         this.prefix = option.prefix ? option.prefix : "!";
         this.owner = option.owner ? option.owner : ["6282214252455"];
+        //
+        this.connect();
+    }
+    async connect() {
+        if (this.option.autoReconnect !== undefined) {
+            /**
+             * onAllErrors
+             * onConnectionLost // only automatically reconnect when the connection breaks
+             */
+            this.conn.autoReconnect = ReconnectMode[this.option.autoReconnect]; // specific
+        } else {
+            this.conn.autoReconnect = ReconnectMode.onAllErrors; // default
+        }
+        this.conn.connectOptions.maxRetries = 10000;
+        this.conn.version = await this.check_version();
+        // this.conn.version = [
+        //     2,
+        //     2142,
+        //     12
+        // ];
+        if (this.option.debug) {
+            this.conn.logger.level = "debug";
+            this.conn.chatOrderingKey = waChatKey(true); // order chats such that pinned chats are on top
+        }
+        this.conn.on('open', async () => {
+            await fs.writeFileSync(this.SESSION_DATA, JSON.stringify(this.conn.base64EncodedAuthInfo(), null, '\t')); // nyimpen sesi baru
+        });
+        if (fs.existsSync(this.SESSION_DATA)) {
+            this.conn.loadAuthInfo(this.SESSION_DATA);
+        }
+        this.conn.on('close', async ({ reason, isReconnecting }) => {
+            if (this.option.debug) {
+                console.log('oh no got disconnected: ' + reason + ', reconnecting: ' + isReconnecting);
+            }
+            if (reason === "invalid_session") {
+                this.logout(async () => {
+                    await this.conn.connect(); // reconnect
+                })
+            } else {
+                if (this.option.reconnect) {
+                    await this.conn.connect(); // reconnect
+                }
+            }
+        })
+        setTimeout(async () => {
+            await this.conn.connect(); // auto connect after declaration
+        }, 500);
+    }
+    async check_version() {
+        const check = await this.fetchJson("https://web.whatsapp.com/check-update?version=1&platform=web")
+        return String(check.currentVersion).split(".").map(v => {
+            return parseInt(v)
+        });
     }
     // =============================== DEFINE ===============================
     blocked = []
@@ -598,7 +616,7 @@ class WhatsApp {
             img_url(await this.getProfilePicture(jid))
         }
         const option = this.option;
-        this.conn.on('open', async function () {
+        await this.conn.on('open', async function () {
             const user = this.user;
             if (option.debug !== undefined) {
                 console.log("WhatsApp Connected...");
@@ -633,8 +651,8 @@ class WhatsApp {
             });
         })
     }
-    listenGroupParticipantsUpdate(receive) {
-        this.conn.on('group-participants-update', async (anu) => {
+    async listenGroupParticipantsUpdate(receive) {
+        await this.conn.on('group-participants-update', async (anu) => {
             try {
                 const group_meta = await this.conn.groupMetadata(anu.jid)
                 const user_id = anu.participants[0];
@@ -685,6 +703,22 @@ class WhatsApp {
                             this.templateItemNormal(`@${user_id.split('@')[0]} hati-hati dijalan :')`),
                         ]), contextInfo: { mentionedJid: [user_id] }
                     })
+                } else if (anu.action == 'promote') {
+                    await this.conn.sendMessage(group_meta.id, buff.result, MessageType.image, {
+                        caption: this.templateFormat("BOT SEKARANG ADMIN", [
+                            this.templateItemNormal(`Terimakasih admin telah menjadikan BOT ini menjadi admin di grup ini`),
+                        ]), contextInfo: { mentionedJid: [user_id] }
+                    }).then(async () => {
+                        console.log("dijadikan admin di dalam grup...");
+                    })
+                } else if (anu.action == 'demote') {
+                    await this.conn.sendMessage(group_meta.id, buff.result, MessageType.image, {
+                        caption: this.templateFormat("BOT BUKAN ADMIN LAGI", [
+                            this.templateItemNormal(`Terimakasih sebelumnya untuk kepercayaan admin telah membuat BOT menjadi admin`),
+                        ]), contextInfo: { mentionedJid: [user_id] }
+                    }).then(async () => {
+                        console.log("dicopot dari admin di dalam grup...");
+                    })
                 }
             } catch (error) {
                 console.log('Error : ', { error })
@@ -697,12 +731,12 @@ class WhatsApp {
      * 
      * @param {Object} receive mendengarkan semua pesan masuk
      */
-    listenMessage(receive) {
+    async listenMessage(receive) {
         /**
          * The universal event for anything that happens
          * New messages, updated messages, read & delivered messages, participants typing etc.
          */
-        this.conn.on("chat-update", async (ct) => {
+        await this.conn.on("chat-update", async (ct) => {
             let chat = ct;
             if (chat.presences) {
                 // receive presence updates -- composing, available, etc.

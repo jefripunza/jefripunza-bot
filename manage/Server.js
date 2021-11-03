@@ -23,7 +23,7 @@ app.get("/kirim-otp/:nomor", async (req, res, next) => {
     const otp = generateRandomOTP()
     bot.sendMessage(bot.formatter(req.params.nomor, "@s.whatsapp.net"), bot.templateFormat("OTP", [
       bot.templateItemVariable("Kode OTP", otp),
-      bot.templateItemNormal(`_*jangan bagikan kode OTP ini ke orang lain*_`)
+      bot.templateItemNormal(`_*jangan bagikan kode OTP ini ke orang lain*_`),
     ]), MessageType.text)
       .then(() => {
         res.status(200).json({

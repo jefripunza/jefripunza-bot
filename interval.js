@@ -82,6 +82,7 @@ const interval = async (delay) => {
                     if (!user.kick && days_now - days_user >= 8) { // auto
                         // kick
                         console.log({ group_id, user, days_now, days_user }); // 1634633915000
+                        await changeKickTrue(user._id);
                         await bot.sendMessage(group_id, bot.templateFormat("KICK DADAKAN!", [
                             bot.templateItemVariable("NAMA", user.name),
                             bot.templateItemVariable("UNIV", user.university),
@@ -90,7 +91,6 @@ const interval = async (delay) => {
                         ]), async () => {
                             console.log("sending...");
                             await bot.kickGroupMember(group_id, [user.number])
-                            await changeKickTrue(user._id);
                         })
                     }
                 }
