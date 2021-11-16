@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@adiwajshing/baileys@^3.5.2":
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/@adiwajshing/baileys/-/baileys-3.5.2.tgz#cf7d14bd9fd3c501896e7a7937192bff10721f1a"
-  integrity sha512-tC9xGvVueql57pnEj6OwxTU2ENOfXMG9w4tVkbCh5w3BseyIjH+xqM0fd+hcOyYFdwi43bdMIlqYa39D50xGDQ==
+"@adiwajshing/baileys@^3.5.3":
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/@adiwajshing/baileys/-/baileys-3.5.3.tgz#b93364576deceddd7f55a51853b32004cea02ad1"
+  integrity sha512-eSmcTuF+lJ8xRGDv2CDqVC/wJAx5vsZXs4u1f4VHiRqDmj5y20JRkGXUnZpaRdO/r72yeLqrkln/w3x6d4JZuw==
   dependencies:
     "@adiwajshing/keyed-db" "^0.2.2"
     curve25519-js "^0.0.4"
@@ -26,9 +26,9 @@
   integrity sha512-yprSnAtj80/VKuDqRcFFLDYltoNV8tChNwFfIgcf6PGD4sjzWIBgs08pRuTqGH5mk5wgL6PBRSsMCZqtZwzFEw==
 
 "@babel/runtime@^7.7.2":
-  version "7.16.0"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.0.tgz#e27b977f2e2088ba24748bf99b5e1dece64e4f0b"
-  integrity sha512-Nht8L0O8YCktmsDV6FqFue7vQLRx3Hb0B37lS5y0jDRqRxlBG4wIJHnf9/bgSE2UyipKFA01YtS+npRdTWBUyw==
+  version "7.16.3"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.3.tgz#b86f0db02a04187a3c17caa77de69840165d42d5"
+  integrity sha512-WBwekcqacdY2e9AF/Q7WLFUWmdJGJTkbjqTjoMDgXkVZ3ZRUvOPsLb5KdwISoQVsbP+DQzVZW4Zhci0DvpbNTQ==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -484,9 +484,9 @@
   integrity sha512-TMgXmy0v2xWyuCSCJM6NCna2snndD8yvQF67J29ipdzMcsPa9u+o0tjF5+EQNdhcuZplYuouYqpc4zcd5I6amQ==
 
 "@types/node@>=13.7.0":
-  version "16.11.6"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.6.tgz#6bef7a2a0ad684cf6e90fcfe31cecabd9ce0a3ae"
-  integrity sha512-ua7PgUoeQFjmWPcoo9khiPum3Pd60k4/2ZGXt18sm2Slk0W0xZTqt5Y0Ny1NyBiN1EVQ/+FaF9NcY4Qe6rwk5w==
+  version "16.11.7"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.7.tgz#36820945061326978c42a01e56b61cd223dfdc42"
+  integrity sha512-QB5D2sqfSjCmTuWcBWyJ+/44bcjO7VbjSbOE0ucoVbAsSNQc4Lt6QkgkVXkTDwkL4z/beecZNDvVX15D4P8Jbw==
 
 "@types/responselike@*", "@types/responselike@^1.0.0":
   version "1.0.0"

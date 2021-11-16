@@ -810,6 +810,7 @@ class WhatsApp {
                 this.messageLogger.push(JSON.parse(JSON.stringify(chat)))
             }
 
+            // console.log({ chat });
             if (!chat.hasNewMessage) return;
             if (chat.key && chat.key.remoteJid === "status@broadcast") return; // negate status
             chat = JSON.parse(JSON.stringify(chat)).messages[0];
