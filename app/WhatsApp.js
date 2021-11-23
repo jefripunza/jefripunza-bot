@@ -1132,8 +1132,8 @@ class WhatsApp {
                                 await this.sendImage(from, buffer.result, chat, this.templateFormat("YOUTUBE DOWNLOAD", [
                                     this.templateItemVariable("Judul", video.title),
                                     this.templateItemVariable("Channel", video.channel),
-                                    this.templateItemVariable("Kualitas", video.video.qualityLabel + ` (${video.video.quality})`),
-                                    this.templateItemVariable("Size", video.video.size + ` (${video.video.container})`),
+                                    this.templateItemVariable("Kualitas", String(video.video.format).split(" - ")[1]),
+                                    this.templateItemVariable("Size", video.video.size + ` (${video.video.ext})`),
                                     this.templateItemList("Cara Download", [
                                         this.templateItemNormal("klik *Baca selengkapnya* agar link terlihat keseluruhan"),
                                         this.templateItemNormal("buka link *Streaming*"),
