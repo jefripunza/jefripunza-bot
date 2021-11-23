@@ -1508,7 +1508,7 @@ class WhatsApp {
                         const code = String(link)
                             .split(".com")[1]
                             .split("/")[2]
-                        const ig = await this.fetchJson(`${myAPI}/api/ytdl?url=https://www.instagram.com/p/${code}/`);
+                        const ig = await this.fetchJson(`${myAPI}/igdl?url=https://www.instagram.com/p/${code}/`);
                         const {
                             _status,
                             message,
@@ -2107,7 +2107,7 @@ class WhatsApp {
         });
     }
     async getYoutubeInfo(videoID) {
-        return await this.fetchJson(`${myAPI}/api/ytdl?url=${videoID}`);
+        return await this.fetchJson(`${myAPI}/ytdl?url=${videoID}`);
     }
     // =================================================================
 }
