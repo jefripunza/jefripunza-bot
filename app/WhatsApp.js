@@ -45,6 +45,8 @@ const brainly = require('brainly-scraper');
 const ytdl = require('ytdl-core');
 const { checkGroupVerify } = require("../models");
 
+const myAPI = "https://portofolio.jefripunza.repl.co/api"
+
 class WhatsApp {
     /**
      * WhatsApp Bot (baileys)
@@ -1123,7 +1125,8 @@ class WhatsApp {
                 ytdl: async () => {
                     if (isGroup) {
                         if (command === this.prefix + "ytdl") {
-                            if (String(args[0]).startsWith("https://www.youtube.com/watch?v=")) {
+                            const ytIdRegex = /(?:http(?:s|):\/\/|)(?:(?:www\.|)youtube(?:\-nocookie|)\.com\/(?:watch\?.*(?:|\&)v=|embed\/|v\/)|youtu\.be\/)([-_0-9A-Za-z]{11})/
+                            if (ytIdRegex.test(args[0])) {
                                 const video = await this.getYoutubeInfo(args[0])
                                 const buffer = await this.getBuffer(video.thumbnail)
                                 await this.sendImage(from, buffer.result, chat, this.templateFormat("YOUTUBE DOWNLOAD", [
@@ -1505,29 +1508,27 @@ class WhatsApp {
                         const code = String(link)
                             .split(".com")[1]
                             .split("/")[2]
-                        const ig = await this.fetchJson(`https://docs-jojo.herokuapp.com/api/instagram-post?url=https://www.instagram.com/p/${code}/`);
+                        const ig = await this.fetchJson(`${myAPI}/api/ytdl?url=https://www.instagram.com/p/${code}/`);
                         const {
                             _status,
                             message,
-                            caption,
-                            owner,
-                            media_result,
+                            response,
                         } = ig;
                         if (_status === 200) {
                             const balasan = this.templateFormat("INSTAGRAM DOWNLOADER", [
                                 this.templateItemVariable(`Request`, pushname),
-                                this.templateItemEnter(),
-                                this.templateItemVariable("Username", "https://www.instagram.com/" + owner.username),
-                                this.templateItemVariable("Caption", caption),
                             ])
-                            for (let i = 0; i < media_result.length; i++) {
-                                const media = media_result[i];
-                                const buff = await this.getBuffer(media.url);
-                                if (media.type === "video") {
+                            for (let i = 0; i < response.length; i++) {
+                                const {
+                                    type,
+                                    downloadUrl,
+                                } = response[i];
+                                const buff = await this.getBuffer(downloadUrl);
+                                if (type === "video") {
                                     await this.sendVideo(from, buff.result, chat, "", () => {
                                         console.log("DONE...");
                                     })
-                                } else if (media.type === "image") {
+                                } else if (type === "image") {
                                     await this.sendImage(from, buff.result, chat, "", () => {
                                         console.log("DONE...");
                                     })
@@ -2106,47 +2107,7 @@ class WhatsApp {
         });
     }
     async getYoutubeInfo(videoID) {
-        const target = await ytdl.getInfo(videoID);
-        const thumbnail = target.videoDetails.thumbnails.reverse()[0].url
-        const title = target.videoDetails.title
-        const channel = target.videoDetails.ownerChannelName
-        // console.log({
-        //     // list: target.formats,
-        // });
-        const video = target.formats
-            .filter(v => {
-                return v.hasVideo && v.hasAudio; // punya video dan audio
-            })
-            .filter(v => {
-                return v.container === 'mp4'; // format harus mp4
-            })
-            .map(v => { // ekstrak
-                const size = this.formatBytes(parseInt(v.contentLength))
-                return {
-                    mimeType: v.mimeType,
-                    qualityLabel: v.qualityLabel,
-                    quality: v.quality,
-                    container: v.container,
-                    contentLength: v.contentLength,
-                    size,
-                    url: v.url,
-                }
-            })
-        if (video.length > 0) {
-            return {
-                success: true,
-                thumbnail,
-                title,
-                channel,
-                video: video.filter((v, i) => {
-                    return i === 0
-                })[0],
-            }
-        } else {
-            return {
-                success: false,
-            }
-        }
+        return await this.fetchJson(`${myAPI}/api/ytdl?url=${videoID}`);
     }
     // =================================================================
 }
