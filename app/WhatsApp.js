@@ -1127,27 +1127,41 @@ class WhatsApp {
                         if (command === this.prefix + "ytdl") {
                             const ytIdRegex = /(?:http(?:s|):\/\/|)(?:(?:www\.|)youtube(?:\-nocookie|)\.com\/(?:watch\?.*(?:|\&)v=|embed\/|v\/)|youtu\.be\/)([-_0-9A-Za-z]{11})/
                             if (ytIdRegex.test(args[0])) {
-                                const video = await this.getYoutubeInfo(args[0])
-                                const buffer = await this.getBuffer(video.thumbnail)
-                                await this.sendImage(from, buffer.result, chat, this.templateFormat("YOUTUBE DOWNLOAD", [
-                                    this.templateItemVariable("Judul", video.title),
-                                    this.templateItemVariable("Channel", video.channel),
-                                    this.templateItemVariable("Kualitas", String(video.video.format).split(" - ")[1]),
-                                    this.templateItemVariable("Size", video.video.size + ` (${video.video.ext})`),
-                                    this.templateItemList("Cara Download", [
-                                        this.templateItemNormal("klik *Baca selengkapnya* agar link terlihat keseluruhan"),
-                                        this.templateItemNormal("buka link *Streaming*"),
-                                        this.templateItemNormal("klik *tombol titik 3* pada video kanan bawah"),
-                                        this.templateItemNormal("klik *Download*"),
-                                    ], true),
-                                    this.templateItemVariable("Streaming", video.video.url),
-                                ]))
-                                    .then(async () => {
-                                        console.log("DONE...");
-                                    })
-                                    .catch((error) => {
-                                        console.log("Error... : ", { error });
-                                    })
+                                const youtube = await this.getYoutubeInfo(args[0])
+                                const {
+                                    _status,
+                                    success,
+                                    message,
+                                    response,
+                                } = youtube;
+                                if (_status === 200) {
+                                    if (success) {
+                                        const buffer = await this.getBuffer(response.thumbnail)
+                                        await this.sendImage(from, buffer.result, chat, this.templateFormat("YOUTUBE DOWNLOAD", [
+                                            this.templateItemVariable("Judul", response.title),
+                                            this.templateItemVariable("Channel", response.channel),
+                                            this.templateItemVariable("Kualitas", String(response.video.format).split(" - ")[1]),
+                                            this.templateItemVariable("Size", response.video.size + ` (${response.video.ext})`),
+                                            this.templateItemList("Cara Download", [
+                                                this.templateItemNormal("klik *Baca selengkapnya* agar link terlihat keseluruhan"),
+                                                this.templateItemNormal("buka link *Streaming*"),
+                                                this.templateItemNormal("klik *tombol titik 3* pada video kanan bawah"),
+                                                this.templateItemNormal("klik *Download*"),
+                                            ], true),
+                                            this.templateItemVariable("Streaming", response.video.url),
+                                        ]))
+                                            .then(async () => {
+                                                console.log("DONE...");
+                                            })
+                                            .catch((error) => {
+                                                console.log("Error... : ", { error });
+                                            })
+                                    } else {
+                                        await fungsi.reply(message)
+                                    }
+                                } else {
+                                    await fungsi.reply(message)
+                                }
                             } else {
                                 await fungsi.reply("maaf, format link tidak benar!", () => {
                                     console.log("wrong, link youtube...");
